@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <script src="/socket.io/socket.io.js"></script>
+
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>Socket.IO movie recommender</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: 'Roboto Mono', monospace;
+        color: #ecf3f4;
+      }
+      /* Create three equal columns that floats next to each other */
+
+      .column {
+        float: left;
+        width: 48%;
+        padding: 10px;
+        min-height: 80vh;
+        background-color: #292b2b;
+        border-radius: 10px;
+        margin: 1%;
+      }
+      /* Clear floats after the columns */
+
+      body {
+        background-color: #141414;
+      }
+
+      p,
+      button {
+        font-size: 10px;
+      }
+
+      h3 {
+        font-size: 12px;
+      }
+
+      .row:after {
+        content: '';
+        display: table;
+        clear: both;
+      }
+      /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+
+      @media screen and (max-width: 600px) {
+        .column {
+          width: 100%;
+        }
+      }
+
+      img {
+        width: 100%;
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      .movie {
+        width: 30%;
+        text-align: center;
+      }
+
+      .movieContent {
+        display: flex;
+        flex-direction: row;
+      }
+
+      #messages {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      #shouldSeeMovies {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      #addedMovies {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      #friendMovies {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .button-37 {
+        background-color: #13aa52;
+        border: 1px solid #13aa52;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 400;
+        outline: none;
+        outline: 0;
+        padding: 10px 10px;
+        margin: 1px;
+        text-align: center;
+        transform: translateY(0);
+        transition: transform 150ms, box-shadow 150ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+
+      .button-37:hover {
+        box-shadow: rgba(0, 0, 0, 0.15) 0 3px 9px 0;
+        transform: translateY(-2px);
+      }
+
+      #startview {
+        justify-content: center;
+        width: 100%;
+        justify-self: center;
+        display: flex;
+      }
+
+      #startviewcontent {
+        width: 600px;
+        text-align: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+
+  <body onLoad="initialLoad()">
+    <div class="row" id="rootelement">
+      <div class="column" id="myside">
+        <div id="btns">
+          <button class="button-37" id="start" onClick="startTimer()"
+            >Lets go</button
+          >
+          <button
+            class="button-37"
+            id="start"
+            onClick="quit()"
+            style="background-color: #ff9494; border-color: #ff9494"
+            >Quit</button
+          ></div
+        >
+
+        <p id="category"></p>
+        <h2 id="timer"></h2>
+        <h3 id="movie-header-title"></h3>
+        <div id="messages"></div>
+        <!-- <button onClick="requestMore()" class="button-37"
+          >Show more movies plzz</button
+        > -->
+      </div>
+
+      <div class="column" id="friendside">
+        <h2 id="matches">Waiting for friend..</h2>
+
+        <h3 id="mynrselected"></h3>
+        <h3 id="nrselected"></h3>
+
+        <div id="shouldSeeMovies"> </div>
+      </div>
+    </div>
+    <div id="startview">
+      <div id="startviewcontent">
+        <h3>Welcome to movie matcher</h3>
+        <button class="button-37" role="button" onClick="createRoom()"
+          >Create a new room</button
+        >
+        <p>or</p>
+        <p>Join an existing room</p>
+        <div id="available"></div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="/overview.js"></script>
+  </body>
+</html>
