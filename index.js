@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const io = new Server(server);
 const axios = require('axios');
+require('dotenv').config();
 app.use(express.static('js'));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -25,7 +26,6 @@ io.on('connection', (socket) => {
     var clients = io.sockets.adapter.rooms.get(room);
     const numClients = clients ? clients.size : 0;
     if (numClients <= 1) {
-      console.log('user joined room' + room);
       socket.join(room);
       if (numClients == 1) {
         io.to(room).emit('begin');
